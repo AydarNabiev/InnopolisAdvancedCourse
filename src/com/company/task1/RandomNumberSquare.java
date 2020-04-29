@@ -19,7 +19,7 @@ public class RandomNumberSquare {
 
     /**
      * main method
-     * @param args
+     * @param args - array of strings
      * @throws ArithmeticException - происходит, если k < 0
      */
     public static void main(String[] args) throws ArithmeticException {
