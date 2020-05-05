@@ -22,14 +22,20 @@ public class HelloWorld {
         String message = "Hello, world!";
         String emptyString = null;
         System.out.println(message);
-
-        // в данном случае программа упадёт на первой ошибке, остальные не произойдут (по условию сказано, что должно
-        // падать). нужно комментирование строки с первой произошедшей ошибкой, чтобы следующая проявилась
-
-        emptyString.equals(message); // происходит NullPointerException, если не закомментировано
-
-        int arithmeticExceptionNumber = 15/0; // происходит ArithmeticException, если не закомментировано
-
-        throw new NoSuchFieldException("У класса нет указанного поля"); // происходит ArrayIndexOutOfBoundsException, если не закомментировано
+        try {
+            emptyString.equals(message);
+        } catch (NullPointerException e) {
+            System.out.println("Произошёл NullPointerException");
+        }
+        try {
+            int arithmeticExceptionNumber = 15/0;
+        } catch (ArithmeticException e) {
+            System.out.println("Произошёл ArithmeticException");
+        }
+        try {
+            throw new NoSuchFieldException("У класса нет указанного поля");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Произошёл ArrayIndexOutOfBoundsException");
+        }
     }
 }

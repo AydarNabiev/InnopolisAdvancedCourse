@@ -14,8 +14,8 @@ import java.util.Random;
  */
 public class RandomNumberSquare {
 
-    static int numbers = 100;
-    static Random random = new Random(new Date().getTime()); // для получения разных рандомных значений при каждом запуске
+    public static final int NUMBERS = 100;
+    static Random random = new Random();
 
     /**
      * main method
@@ -23,23 +23,8 @@ public class RandomNumberSquare {
      * @throws ArithmeticException - происходит, если k < 0
      */
     public static void main(String[] args) throws ArithmeticException {
-        for (int i = 0; i < numbers; i++) {
+        for (int i = 0; i < NUMBERS; i++) {
             int k = random.nextInt();
-
-            // закомментированное решение, которое не совпадает с условием задачи (по нему требуется генерация искл-ия)
-            // предпочитаю его, чтобы не было прерывания задачи в случае отрицательного числа
-            /*try {
-                double q = Math.sqrt(k);
-                int q2 = (int) q;
-                if ((q2 * q2) == k) {
-                    System.out.println(k);
-                } else {
-                    System.out.println(k + "мда");
-                }
-            } catch (ArithmeticException e) {
-                System.out.println("Число " + k + " оказалось отрицательным, в операции нет смысла");
-            }*/
-
             if (k >= 0) {
                 double q = Math.sqrt(k);
                 int q2 = (int) q;

@@ -5,33 +5,30 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * PersonBubbleComparator.
+ * PersonInsertionComparator.
  * This is a program that implements Comparator Interface
- * It uses bubble sorting
+ * It uses insertion sorting
  *
  *  Version 1.0
  *
  * @author Aydar Nabiev
  */
-public class PersonBubbleSorter implements SorterInterface, Comparator<Person> {
+public class PersonInsertionSorter implements SorterInterface, Comparator<Person> {
 
     /**
      * @param list - list of persons to sort
      * @throws Exception - происходит, если сравниваемые объекты обладают одинаковыми именами и возрастами
      */
     @Override
-    public void sortPersonList(ArrayList<Person> list) throws Exception {
-        for (int i = 0; i < list.size() - 1; i ++) {
-            for (int j = 0; j < list.size() - i - 1; j++) {
-                Person personJ = list.get(j);
-                Person personNextToJ = list.get(j + 1);
-                if (personJ.getName().equals(personNextToJ.getName()) && personJ.getAge() == personNextToJ.getAge()) {
-                    throw new Exception("Имена и возрасты одинаковые - имя " + personJ.getName() + " и возраст " + personJ.getAge());
-                }
-                if (compare(personJ, personNextToJ) < 0) {
-                    Collections.swap(list, j + 1, j);
-                }
+    public void sortPersonList(ArrayList<Person> list) {
+        for (int j = 1; j < list.size(); j++) {
+            Person personJ = list.get(j);
+            int i = j;
+            while (i > 0 && compare(list.get(i - 1), personJ) < 0) {
+                list.set(i, list.get(i - 1));
+                i--;
             }
+            list.set(i, personJ);
         }
     }
 

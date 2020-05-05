@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
  * @author Aydar Nabiev
  */
 public class Person {
-    int age;
-    Sex sex;
-    String name;
+    private int age;
+    private Sex sex;
+    private String name;
 
     /**
      * main method
@@ -24,27 +24,29 @@ public class Person {
      */
     public static void main(String[] args) throws Exception {
         ArrayList<Person> people = new ArrayList<>();
-        Random random = new Random(new Date().getTime()); // для получения разных рандомных значений при каждом запуске
-        for (int i = 0; i < 10; i++) { //10000
+        Random random = new Random();
+        for (int i = 0; i < 10000; i++) {
             people.add(new Person(random.nextInt(100), Sex.values()[random.nextInt(2)], getRandomName()));
         }
+        System.out.println(people);
+        System.out.println("Список до сортировки");
+        System.out.println("-------------------------------------------");
         ArrayList<Person> peopleCopy = new ArrayList<>(people);
         PersonBubbleSorter personBubbleSorter = new PersonBubbleSorter();
         long startTime = System.nanoTime();
         personBubbleSorter.sortPersonList(people);
         long endTime = System.nanoTime();
         long timeInMillis = TimeUnit.MILLISECONDS.convert(endTime - startTime, TimeUnit.NANOSECONDS);
-        System.out.println("Результат сортировки пузырьком " + people);
+        System.out.println(people);
         System.out.println("Затраченное на сортировку пузырьком время : " + (timeInMillis) + " мс");
-
-        // TODO добавить сортировку слиянием, сначала закончить с пузырьком
-        /*PersonMergeSorter personMergeSorter = new PersonMergeSorter();
+        System.out.println("-------------------------------------------");
+        PersonInsertionSorter personInsertionSorter = new PersonInsertionSorter();
         startTime = System.nanoTime();
-        personMergeSorter.sortPersonList(peopleCopy);
+        personInsertionSorter.sortPersonList(peopleCopy);
         endTime = System.nanoTime();
         timeInMillis = TimeUnit.MILLISECONDS.convert(endTime - startTime, TimeUnit.NANOSECONDS);
-        System.out.println("Результат сортировки слиянием " + peopleCopy);
-        System.out.println("Затраченное на сортировку слиянием время : " + (timeInMillis) + " мс");*/
+        System.out.println(peopleCopy);
+        System.out.println("Затраченное на сортировку вставками время : " + (timeInMillis) + " мс");
     }
 
     /**
@@ -80,6 +82,15 @@ public class Person {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "age=" + age +
+                ", sex=" + sex +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     /**
