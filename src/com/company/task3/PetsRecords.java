@@ -1,37 +1,39 @@
 package com.company.task3;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class PetsRecords {
-    private List<Animal> petsInDatabase;
+    private Set<Animal> petsInDatabase = new HashSet<>();
+
+    public Set<Animal> getPetsInDatabase() {
+        return petsInDatabase;
+    }
 
     public void addAnimal(Animal animal) {
-        if (petsInDatabase.contains(animal)) {
-            try {
-                throw new Exception("Питомец " + animal.toString() + " уже присутствует в картотеке.");
-            } catch (Exception e) {
-                System.out.println("Пожалуйста, добавьте другого питомца.");
-            }
-        } else {
-            petsInDatabase.add(animal);
 
+        if (!petsInDatabase.add(animal)) {
+            System.out.println("Питомец " + animal + " уже присутствует в картотеке");
         }
     }
 
-    public Animal searchAnimal(Animal animal) {
-        if (petsInDatabase.contains(animal)) {
-            return petsInDatabase.get(petsInDatabase.indexOf(animal));
-        } else {
-            System.out.println("Питомца " + animal + " нет в нашей картотеке.");
-            return null;
-        }
+    public void searchAnimal(String alias) {
+        Animal foundAnimal = petsInDatabase.stream()
+                .filter(animal -> animal.getAlias().equals(alias))
+                .findFirst()
+                .orElse(null);
+        System.out.println("По кличке " + alias + " нашли питомца: " + foundAnimal);
     }
 
-    public Animal changeAnimal(int animalId) {
-        return petsInDatabase.get(animalId);
+    public void changeAnimal(Animal animal) {
+        int animalId = animal.getId();
+        Animal foundAnimal = petsInDatabase.stream()
+                .filter(a -> a.getId() == (animalId))
+                .findFirst()
+                .orElse(null);
+        if (foundAnimal != null) {
+            petsInDatabase.remove(foundAnimal);
+        }
+        petsInDatabase.add(animal);
     }
 
     public void printSortedPets() {

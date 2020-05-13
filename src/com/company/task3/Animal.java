@@ -6,6 +6,15 @@ public class Animal {
     private Person owner;
     private int weight;
 
+    public Animal(int id, String alias, Person owner, int weight) {
+        this.id = id;
+        this.alias = alias;
+        this.owner = owner;
+        this.weight = weight;
+    }
+
+    public int getId() { return id; }
+
     public String getAlias() {
         return alias;
     }
@@ -16,6 +25,22 @@ public class Animal {
 
     public int getWeight() {
         return weight;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     public String getOwnerName() {

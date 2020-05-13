@@ -2,14 +2,14 @@ package com.company.task2;
 
 import java.util.ArrayList;
 
-public class ObjectBox<O> {
-    private ArrayList<O> listOfObjects;
+public class ObjectBox {
+    private ArrayList<Object> listOfObjects;
 
-    void addObject(O object) {
+    void addObject(Object object) {
         listOfObjects.add(object);
     }
 
-    void deleteObject(O object) {
+    void deleteObject(Object object) {
         if (!listOfObjects.contains(object)) {
             listOfObjects.remove(object);
         }

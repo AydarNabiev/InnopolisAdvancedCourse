@@ -4,27 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MathBox<N extends Number> extends ObjectBox {
-    private List<N> mathboxList;
+public class MathBox extends ObjectBox {
+    private List<Number> mathboxList = new ArrayList<>();
 
     public MathBox(Number[] numbers) {
-        this.mathboxList = new ArrayList<>();
         for (int i = 0; i < numbers.length; i++) {
-            this.mathboxList.add((N) numbers[i]);
+            this.mathboxList.add(numbers[i]);
         }
     }
 
-    public N summator() {
-        N result = null;
+    public Number summator() {
+        double result = 0d;
         for (int i = 0; i < mathboxList.size(); i++) {
-            result = result + mathboxList.get(i);
+            result += (Integer) mathboxList.get(i);
         }
-        return null;
+        return result;
     }
 
-    public void splitter(Number splitter) {
+    public void splitter(int splitter) {
         for (int i = 0; i < mathboxList.size(); i++) {
-            mathboxList.get(i) / splitter;
+            mathboxList.set(i, ((Double) mathboxList.get(i) / splitter));
         }
     }
 
