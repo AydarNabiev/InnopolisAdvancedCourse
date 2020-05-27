@@ -27,8 +27,10 @@ public class ReadWriteAlphabetically {
             System.out.println(wordsToFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            System.out.println("Файл не найден!");
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Ошибка потока ввода вывода!");
         }
     }
 }
