@@ -3,7 +3,7 @@ package com.company.task5;
 import java.math.BigInteger;
 import java.util.concurrent.Callable;
 
-public class CalculateFactorial implements Callable {
+public class CalculateFactorial implements Callable<BigInteger> {
     private Integer number;
     private BigInteger factorialOfClosestSmallerNumber;
     private Integer closestSmallerNumber;
