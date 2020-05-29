@@ -12,12 +12,17 @@ public class Main {
             folderFiles.delete();
         }
         SerealizerDeserializer serealizerDeserializer = new SerealizerDeserializer();
-        Car car = new Car("", 2000, "Green");
-        //Person man = new Person("Ivan", "Male", 32, false, car);
-        Person man = new Person("Ivan", "Male", 32, false);
+        Car car = new Car("Ford", 2000, "Green");
+        Person man = new Person("Ivan", "Male", 32, false, car);
         System.out.println(man.toString());
         String manFile = PATH + "man.txt";
         serealizerDeserializer.serialize(man, manFile);
-        serealizerDeserializer.deSerialize(manFile);
+        Person manCopy = (Person) serealizerDeserializer.deSerialize(manFile);
+        System.out.println("================================");
+        System.out.println("toString оригинального объекта");
+        System.out.println(man.toString());
+        System.out.println("================================");
+        System.out.println("toString десериализованного объекта");
+        System.out.println(manCopy.toString());
     }
 }

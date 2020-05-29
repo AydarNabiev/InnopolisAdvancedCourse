@@ -7,52 +7,54 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class SerealizerDeserializer {
+    static int counter = 100;
+    private static final Set<String> CLASSES = new HashSet<>(Arrays.asList("java.lang.String", "boolean", "byte", "short", "int", "long", "float", "double"));
 
     void serialize(Object object, String file) {
         File output = new File(file);
         Map<String, Object> objectMap = new LinkedHashMap<>();
-        Class objectClass = object.getClass();
-        //objectMap.put("Class", objectClass.toString());
-        //objectMap.put("Class", objectClass.getSimpleName());
+        Class<?> objectClass = object.getClass();
         objectMap.put("Class", objectClass.getName());
-        Field[] fields = objectClass.getDeclaredFields();
-        for (Field field : fields) {
+        for (Field field : objectClass.getDeclaredFields()) {
             try {
                 Field objectField = objectClass.getDeclaredField(field.getName());
-                System.out.println("Нашли поле " + objectField);
-                objectField.setAccessible(true);
-                Object fieldValue = objectField.get(object);
-                System.out.println("Достали значение " + fieldValue);
-                if (fieldValue != null) {
-
-
-
-                    //objectMap.put(objectField.toString(), fieldValue.toString());
-                    objectMap.put(objectField.getType().toString().replaceFirst("class ", ""), fieldValue.toString());
+                if (CLASSES.contains(objectField.getType().toString().replaceFirst("class ", ""))) {
+                    System.out.println("Нашли поле примитивного типа либо типа String " + objectField);
+                    objectField.setAccessible(true);
+                    Object fieldValue = objectField.get(object);
+                    System.out.println("Достали значение " + fieldValue);
+                    objectMap.put(counter + objectField.getType().toString().replaceFirst("class ", ""), fieldValue.toString());
                 } else {
-                    objectMap.put(objectField.toString(), null);
+                    System.out.println("Нашли поле ссылочного типа " + objectField);
+                    List<String> refTypeFields = new LinkedList<>();
+                    objectField.setAccessible(true);
+                    Object fieldValueObject = objectField.get(object);
+                    System.out.println("Достали значение-объект " + fieldValueObject);
+                    Class<?> refFieldClass = fieldValueObject.getClass();
+                    for (Field refField: refFieldClass.getDeclaredFields()) {
+                        try {
+                            Field refObjectField = refFieldClass.getDeclaredField(refField.getName());
+                            refObjectField.setAccessible(true);
+                            Object refFieldValue = refObjectField.get(fieldValueObject);
+                            refTypeFields.add(refFieldValue.toString());
+                        } catch (NoSuchFieldException e) {
+                            System.out.println("Такое поле отсутствует");
+                        } catch (SecurityException e) {
+                            System.out.println("Исключение безопасности");
+                        }
+                    }
+                    String refValues = refTypeFields.toString().replaceAll("\\]", "")
+                            .replaceFirst("\\[", "").replaceAll(",", ";").replaceAll(" ", "");
+                    objectMap.put(counter + objectField.getType().toString().replaceFirst("class ", ""), refValues);
                 }
+                counter++;
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 System.out.println("Поля " + field + " нет в данном классе.");
             }
         }
-        System.out.println(objectMap);
         try (FileWriter fileWriter = new FileWriter(output)) {
             for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
-                if (entry.getValue() != null && entry.getValue().getClass().equals(LinkedHashMap.class)) {
-                    Map<String, Object> insideMap = (LinkedHashMap) entry.getValue();
-                    fileWriter.write(entry.getKey() + System.lineSeparator());
-                    for (Map.Entry<String, Object> insideEntry : insideMap.entrySet()) {
-
-                        fileWriter.write(insideEntry.getKey() + " : " + insideEntry.getValue() + System.lineSeparator());
-
-
-                    }
-                    fileWriter.write("End of " + entry.getKey());
-                } else {
-                    fileWriter.write(entry.getKey() + ":" + entry.getValue() + System.lineSeparator());
-
-                }
+                fileWriter.write(entry.getKey() + ":" + entry.getValue() + System.lineSeparator());
             }
         } catch (IOException e) {
             System.out.println("Ошибка ввода-вывода при записи данных объекта в файл.");
@@ -60,9 +62,9 @@ public class SerealizerDeserializer {
     }
 
     Object deSerialize(String file) {
+        Object object = null;
         String line;
-        Map<String, Object> mapFromFile = new LinkedHashMap<>();
-
+        Map<String, String> mapFromFile = new LinkedHashMap<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             while ((line = reader.readLine()) != null) {
@@ -81,86 +83,67 @@ public class SerealizerDeserializer {
                 System.out.println(key + ":" + mapFromFile.get(key));
             }
             reader.close();
-
         } catch (FileNotFoundException e) {
             System.out.println("Не найден файл " + file);
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println(mapFromFile);
-
         try {
-            Class<?> myClass = Class.forName(mapFromFile.get("Class").toString());
-            //Constructor<?> constructor = myClass.getConstructor(String.class);
-            Constructor constructor = myClass.getDeclaredConstructors()[0];
-
+            Class<?> myClass = Class.forName(mapFromFile.get("Class"));
+            Constructor<?> constructor = myClass.getDeclaredConstructors()[0];
             mapFromFile.remove("Class");
-
             List<Object> values = new ArrayList<>();
-            for (Map.Entry<String, Object> entry : mapFromFile.entrySet()) {
-                String parameterClassName = entry.getKey();
-                //Class<?> fieldClass = Class.forName(parameterClassName);
-                Class<?> fieldClass = determineClassFromFile(parameterClassName);
-                Object object = entry.getValue();
-
-                values.add(determineObjectForConstructor(fieldClass, object));
+            for (Map.Entry<String, String> entry : mapFromFile.entrySet()) {
+                String parameterClassName = entry.getKey().substring(3);
+                String fieldObject = entry.getValue();
+                values.add(determineObjectForConstructor(parameterClassName, fieldObject));
             }
-
-            Object object = constructor.newInstance(values);
+            object = constructor.newInstance(values.toArray());
         } catch (ClassNotFoundException e) {
             System.out.println("Не найден класс " + mapFromFile.get("Class"));
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            System.out.println("Ошибка доступа при рефлексии");
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            System.out.println("Ошибка создания экземпляра класса");
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            System.out.println("Обернутая ошибка при создании экземпляра класса");
         }
-
-        return null;
+        return object;
     }
 
-    private Object determineObjectForConstructor(Class<?> fieldClass, Object object) {
-        if (fieldClass.equals("int")) {
-            return (int)object;
-        } else if(fieldClass.equals("boolean")) {
-            return (boolean)object;
-        }
-        return (String) object;
-
-    }
-
-    private Class<?> determineClassFromFile(String parameterClassName) {
+    private Object determineObjectForConstructor(String parameterClassName, String fieldObject) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
         switch (parameterClassName) {
             case "boolean":
-                return boolean.class;
+                return Boolean.parseBoolean(fieldObject);
             case "byte":
-                return byte.class;
+                return Byte.parseByte(fieldObject);
             case "short":
-                return short.class;
+                return Short.parseShort(fieldObject);
             case "int":
-                return int.class;
+                return Integer.parseInt(fieldObject);
             case "long":
-                return long.class;
+                return Long.parseLong(fieldObject);
             case "float":
-                return float.class;
+                return Float.parseFloat(fieldObject);
             case "double":
-                return double.class;
-            case "char":
-                return char.class;
-            case "void":
-                return void.class;
-            default:
-                //String fqn = parameterClassName.contains(".") ? parameterClassName : "java.lang.".concat(parameterClassName);
-                try {
-                    //return Class.forName(fqn);
-                    return Class.forName(parameterClassName);
-                } catch (ClassNotFoundException ex) {
-                    throw new IllegalArgumentException("Class not found: " + parameterClassName);
-                }
+                return Double.parseDouble(fieldObject);
+            case "java.lang.String":
+            case "class java.lang.String":
+                return fieldObject;
         }
-
+        return getReferenceTypeObject(parameterClassName, fieldObject);
     }
 
-
+    private Object getReferenceTypeObject(String parameterClassName, String fieldObject) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Class<?> myClass = Class.forName(parameterClassName);
+        Constructor<?> constructor = myClass.getDeclaredConstructors()[0];
+        List<String> valuesForParameters = Arrays.asList(fieldObject.split("\\s*;\\s*"));
+        Class<?>[] parameters = constructor.getParameterTypes();
+        List<Object> referenceTypeConstructorValues = new ArrayList<>();
+        for (int i = 0; i < valuesForParameters.size(); i++) {
+            referenceTypeConstructorValues.add(determineObjectForConstructor(parameters[i].toString(), valuesForParameters.get(i)));
+        }
+        return constructor.newInstance(referenceTypeConstructorValues.toArray());
+    }
 }
