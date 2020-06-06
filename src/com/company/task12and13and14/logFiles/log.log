@@ -1,0 +1,64 @@
+2020-06-06 18:06:45 INFO  id=1; name=Manchester United T-shirt; category=Clothes; price=500; quantity=200
+2020-06-06 18:06:45 INFO  id=2; name=iPhone; category=Electronics; price=40000; quantity=20
+2020-06-06 18:06:45 INFO  id=3; name=Oral B toothbrush; category=Hygiene; price=1000; quantity=50
+2020-06-06 18:06:45 INFO  id=4; name=Movie Poster collection; category=Hobby; price=500; quantity=50
+2020-06-06 18:06:45 INFO  id=5; name=Philips TV Set; category=Electronics; price=100; quantity=50000
+2020-06-06 18:06:45 INFO  id=2; name=iPhone; category=Electronics; price=40000; quantity=20
+2020-06-06 18:06:45 INFO  Смотрим таблицу product перед командой executeBatch (preparedStatement заготовлен)
+2020-06-06 18:06:45 INFO  id=1; name=Manchester United T-shirt; category=Clothes; price=500; quantity=200
+2020-06-06 18:06:45 INFO  id=2; name=iPhone; category=Electronics; price=40000; quantity=20
+2020-06-06 18:06:45 INFO  id=3; name=Oral B toothbrush; category=Hygiene; price=1000; quantity=50
+2020-06-06 18:06:45 INFO  id=4; name=Movie Poster collection; category=Hobby; price=500; quantity=50
+2020-06-06 18:06:45 INFO  id=5; name=Philips TV Set; category=Electronics; price=100; quantity=50000
+2020-06-06 18:06:45 INFO  Смотрим таблицу product после команды executeBatch()
+2020-06-06 18:06:45 INFO  id=1; name=Manchester United T-shirt; category=Hobby; price=500; quantity=200
+2020-06-06 18:06:45 INFO  id=2; name=iPhone; category=Hobby; price=40000; quantity=20
+2020-06-06 18:06:46 INFO  id=3; name=Oral B toothbrush; category=Hobby; price=1000; quantity=50
+2020-06-06 18:06:46 INFO  id=4; name=Movie Poster collection; category=Hobby; price=500; quantity=50
+2020-06-06 18:06:46 INFO  id=5; name=Philips TV Set; category=Hobby; price=100; quantity=50000
+2020-06-06 18:06:46 INFO  id=1; name=Ivan; address=Ufa; phone=555-031; email=ivan@gmail.com
+2020-06-06 18:06:46 INFO  id=2; name=Sasha; address=Moscow; phone=555-045; email=sasha90@mail.ru
+2020-06-06 18:06:46 INFO  id=3; name=John; address=New-York; phone=555-073; email=heresjohny@gmail.com
+2020-06-06 18:06:46 INFO  id=4; name=Tanya; address=Kazan; phone=555-214; email=tankaz@yandex.ru
+2020-06-06 18:06:46 INFO  id=5; name=Neo; address=Nowhere; phone=555-555; email=theone@gmail.com
+2020-06-06 18:06:46 WARN  Поймали исключение, откатываемся до savepoint'а (два Патрика всё равно должны появиться)
+2020-06-06 18:06:46 INFO  id=1; name=Ivan; address=Ufa; phone=555-031; email=ivan@gmail.com
+2020-06-06 18:06:46 INFO  id=2; name=Sasha; address=Moscow; phone=555-045; email=sasha90@mail.ru
+2020-06-06 18:06:46 INFO  id=3; name=John; address=New-York; phone=555-073; email=heresjohny@gmail.com
+2020-06-06 18:06:46 INFO  id=4; name=Tanya; address=Kazan; phone=555-214; email=tankaz@yandex.ru
+2020-06-06 18:06:46 INFO  id=5; name=Neo; address=Nowhere; phone=555-555; email=theone@gmail.com
+2020-06-06 18:06:46 INFO  id=6; name=Patrick1; address=1; phone=555; email=thisispatrick@gmail.com
+2020-06-06 18:06:46 INFO  id=7; name=Patrick2; address=2; phone=555; email=thisispatrick@gmail.com
+2020-06-06 18:10:09 INFO  Успешный запуск таблицы log
+2020-06-06 18:10:09 INFO  Успешная перезагрузка таблиц client, courier, product
+2020-06-06 18:10:09 INFO  id=1; name=Manchester United T-shirt; category=Clothes; price=500; quantity=200
+2020-06-06 18:10:09 INFO  id=2; name=iPhone; category=Electronics; price=40000; quantity=20
+2020-06-06 18:10:09 INFO  id=3; name=Oral B toothbrush; category=Hygiene; price=1000; quantity=50
+2020-06-06 18:10:09 INFO  id=4; name=Movie Poster collection; category=Hobby; price=500; quantity=50
+2020-06-06 18:10:09 INFO  id=5; name=Philips TV Set; category=Electronics; price=100; quantity=50000
+2020-06-06 18:10:10 INFO  id=2; name=iPhone; category=Electronics; price=40000; quantity=20
+2020-06-06 18:10:10 INFO  Смотрим таблицу product перед командой executeBatch (preparedStatement заготовлен)
+2020-06-06 18:10:10 INFO  id=1; name=Manchester United T-shirt; category=Clothes; price=500; quantity=200
+2020-06-06 18:10:10 INFO  id=2; name=iPhone; category=Electronics; price=40000; quantity=20
+2020-06-06 18:10:10 INFO  id=3; name=Oral B toothbrush; category=Hygiene; price=1000; quantity=50
+2020-06-06 18:10:10 INFO  id=4; name=Movie Poster collection; category=Hobby; price=500; quantity=50
+2020-06-06 18:10:10 INFO  id=5; name=Philips TV Set; category=Electronics; price=100; quantity=50000
+2020-06-06 18:10:10 INFO  Смотрим таблицу product после команды executeBatch()
+2020-06-06 18:10:10 INFO  id=1; name=Manchester United T-shirt; category=Hobby; price=500; quantity=200
+2020-06-06 18:10:10 INFO  id=2; name=iPhone; category=Hobby; price=40000; quantity=20
+2020-06-06 18:10:10 INFO  id=3; name=Oral B toothbrush; category=Hobby; price=1000; quantity=50
+2020-06-06 18:10:10 INFO  id=4; name=Movie Poster collection; category=Hobby; price=500; quantity=50
+2020-06-06 18:10:10 INFO  id=5; name=Philips TV Set; category=Hobby; price=100; quantity=50000
+2020-06-06 18:10:10 INFO  id=1; name=Ivan; address=Ufa; phone=555-031; email=ivan@gmail.com
+2020-06-06 18:10:11 INFO  id=2; name=Sasha; address=Moscow; phone=555-045; email=sasha90@mail.ru
+2020-06-06 18:10:11 INFO  id=3; name=John; address=New-York; phone=555-073; email=heresjohny@gmail.com
+2020-06-06 18:10:11 INFO  id=4; name=Tanya; address=Kazan; phone=555-214; email=tankaz@yandex.ru
+2020-06-06 18:10:11 INFO  id=5; name=Neo; address=Nowhere; phone=555-555; email=theone@gmail.com
+2020-06-06 18:10:11 WARN  Поймали исключение, откатываемся до savepoint'а (два Патрика всё равно должны появиться)
+2020-06-06 18:10:11 INFO  id=1; name=Ivan; address=Ufa; phone=555-031; email=ivan@gmail.com
+2020-06-06 18:10:11 INFO  id=2; name=Sasha; address=Moscow; phone=555-045; email=sasha90@mail.ru
+2020-06-06 18:10:11 INFO  id=3; name=John; address=New-York; phone=555-073; email=heresjohny@gmail.com
+2020-06-06 18:10:11 INFO  id=4; name=Tanya; address=Kazan; phone=555-214; email=tankaz@yandex.ru
+2020-06-06 18:10:11 INFO  id=5; name=Neo; address=Nowhere; phone=555-555; email=theone@gmail.com
+2020-06-06 18:10:11 INFO  id=6; name=Patrick1; address=1; phone=555; email=thisispatrick@gmail.com
+2020-06-06 18:10:11 INFO  id=7; name=Patrick2; address=2; phone=555; email=thisispatrick@gmail.com

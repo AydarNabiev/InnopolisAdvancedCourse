@@ -1,11 +1,15 @@
 package com.company.task12and13and14;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 
 public class ManualCommitSavepoint {
+    private static final Logger logger = LogManager.getRootLogger();
 
     public static void transactionManualCommitAndSavepointShowcase(Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
@@ -18,22 +22,14 @@ public class ManualCommitSavepoint {
                 );
             }
             Savepoint savepoint = connection.setSavepoint();
-            try {
-                for (int i = 3; i <= 4; i++) {
-                    statement.executeUpdate(
-                            "INSERT INTO client (bad parameters that will cause exception)\n"
-                                    + "VALUES\n"
-                                    + "   ('badparams');"
-                    );
-                }
-            } catch (SQLException e) {
+            try {throw new SQLException();} catch (SQLException e) {
                 connection.rollback(savepoint);
-                System.out.println("Поймали исключение, откатываемся до savepoint'а (два патрика всё равно должны появиться)");
+                logger.warn("Поймали исключение, откатываемся до savepoint'а (два Патрика всё равно должны появиться)");
             }
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
-            System.out.println("Поймали SQLException, откатываемся до начала изменений");
+            logger.error("Поймали SQLException, откатываемся до начала изменений");
         }
     }
 }

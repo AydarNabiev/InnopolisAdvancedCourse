@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="postgresql-42.2.12">
+    <CLASSES>
+      <root url="jar://D:/Intellij JARs/postgresql-42.2.12.jar!/" />
+      <root url="jar://D:/Intellij JARs/log4j-api-2.13.3.jar!/" />
+      <root url="jar://D:/Intellij JARs/log4j-core-2.13.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

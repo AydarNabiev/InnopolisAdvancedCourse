@@ -1,26 +1,29 @@
 package com.company.task12and13and14;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Batch {
+    private static final Logger logger = LogManager.getRootLogger();
 
-    public static void applyBatchToProduct(Connection connection, Integer[] batchArgs) throws SQLException {
+    public static void applyBatchToProducts(Connection connection, Integer[] batchArgs) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "update product set category='Hobby' where id = ?")) {
             for (Integer batchArg : batchArgs) {
                 preparedStatement.setInt(1, batchArg);
                 preparedStatement.addBatch();
             }
-            System.out.println("Смотрим таблицу product перед командой executeBatch (preparedStatement заготовлен)");
-            Print.printProductTable(connection);
+            logger.info("Смотрим таблицу product перед командой executeBatch (preparedStatement заготовлен)");
+            Print.printAllProducts(connection);
             preparedStatement.executeBatch();
-            System.out.println("Смотрим таблицу product после команды executeBatch()");
+            logger.info("Смотрим таблицу product после команды executeBatch()");
         } catch (SQLException e) {
-            connection.rollback();
-            System.out.println("Произошла ошибка при батч-запросе SQL");
+            logger.error("Произошла ошибка при батч-запросе SQL");
         }
-        Print.printProductTable(connection);
+        Print.printAllProducts(connection);
     }
 }

@@ -1,13 +1,17 @@
 package com.company.task12and13and14;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ParametrisedQuery {
+    private static final Logger logger = LogManager.getRootLogger();
 
-    public static void printProductParametrisedQuery(Connection connection, int priceLimit, int quantityLimit) throws SQLException {
+    public static void printProductsParametrisedQuery(Connection connection, int priceLimit, int quantityLimit) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM product WHERE price > ? and quantity < ?")) {
             preparedStatement.setInt(1, priceLimit);
@@ -16,8 +20,7 @@ public class ParametrisedQuery {
                 Print.productContents(resultSet);
             }
         } catch (SQLException e) {
-            connection.rollback();
-            System.out.println("Произошла ошибка при параметризированном SQL запросе таблицы Product");
+            logger.error("Произошла ошибка при параметризированном SQL запросе таблицы Product");
         }
     }
 }

@@ -1,8 +1,12 @@
 package com.company.task12and13and14;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 
 public class Reload {
+    private static final Logger logger = LogManager.getRootLogger();
 
     public static void reloadDatabase(Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
@@ -52,5 +56,21 @@ public class Reload {
                     + "   ('Instant Delivery Ltd', '555-2451', 0.2);"
                     + "\n");
         }
+        logger.info("Успешная перезагрузка таблиц client, courier, product");
+    }
+
+    public static void reloadLogDatabase(Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("-- Database: HomeWorkDatabase\n"
+                    + "CREATE TABLE IF NOT EXISTS logs (\n"
+                    + "    log_id varchar(100) primary key,\n"
+                    + "    entry_date varchar(100) NOT NULL,\n"
+                    + "    logger varchar(100) NOT NULL,\n"
+                    + "    log_level varchar(100) NOT NULL,\n"
+                    + "    message varchar(200) NOT NULL,\n"
+                    + "    exception varchar(100) NOT NULL);"
+                    + "\n");
+        }
+        logger.info("Успешный запуск таблицы log");
     }
 }
