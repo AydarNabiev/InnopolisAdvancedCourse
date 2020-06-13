@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Print {
-    private static final Logger logger = LogManager.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     public static final String PRINT_CLIENTS = "SELECT * FROM client";
     public static final String PRINT_PRODUCTS = "SELECT * FROM product";
 
@@ -22,19 +22,19 @@ public class Print {
                         "; address=" + resultSet.getString("address") +
                         "; phone=" + resultSet.getString("phone") +
                         "; email=" + resultSet.getString("email");
-                logger.info(client);
+                LOGGER.info(client);
             }
         } catch (SQLException e) {
-            logger.error("Произошла ошибка при SQL запросе вызова содержимого таблицы Client");
+            LOGGER.error("Произошла ошибка при SQL запросе вызова содержимого таблицы Client");
         }
     }
 
-    public static void printAllProducts(Connection connection) {
+    public void printAllProducts(Connection connection) {
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(PRINT_PRODUCTS)) {
             productContents(resultSet);
         } catch (SQLException e) {
-            logger.error("Произошла ошибка при SQL запросе вызова содержимого таблицы Product");
+            LOGGER.error("Произошла ошибка при SQL запросе вызова содержимого таблицы Product");
         }
     }
 
@@ -45,7 +45,7 @@ public class Print {
                     "; category=" + resultSet.getString("category") +
                     "; price=" + resultSet.getInt("price") +
                     "; quantity=" + resultSet.getInt("quantity");
-            logger.info(product);
+            LOGGER.info(product);
         }
     }
 }
