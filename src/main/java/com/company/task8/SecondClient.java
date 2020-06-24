@@ -7,36 +7,28 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-public class SecondClient {
-
+public class SecondClient implements Observer {
+    static DatagramSocket clSocket = null;
+    static byte[] buffer = new byte[65536];
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        DatagramSocket clSocket = new DatagramSocket();
+        clSocket = new DatagramSocket(6666);
         clSocket.setBroadcast(true);
-        // автоматическая отправка первого сообщения-имени
-        String name = "Ivan" + System.currentTimeMillis();
+        String name = "Maria";
         clSocket.send(new DatagramPacket(name.getBytes(), name.getBytes().length, InetAddress.getByName("127.0.0.1"), 6000));
-        //буфер для получения входящих данных
-        byte[] buffer = new byte[65536];
         DatagramPacket firstReply = new DatagramPacket(buffer, buffer.length);
         clSocket.receive(firstReply);
         String nameMessage = new String(firstReply.getData(), 0, firstReply.getLength());
         System.out.println("Сервер: " + firstReply.getAddress().getHostAddress() + ", получил имя: " + nameMessage);
         while(!clSocket.isClosed())
         {
-
-
-
-            //Ожидаем ввод сообщения серверу
             System.out.println("Введите сообщение серверу: ");
             String myMessage = (String)reader.readLine();
             byte[] bytes = myMessage.getBytes();
-            //Отправляем сообщение
             DatagramPacket dp = new DatagramPacket(bytes , bytes.length , InetAddress.getByName("127.0.0.1"), 6000);
             clSocket.send(dp);
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-            //Получаем данные
             clSocket.receive(reply);
             byte[] data = reply.getData();
             myMessage = new String(data, 0, reply.getLength());
@@ -47,5 +39,14 @@ public class SecondClient {
                 System.out.println("Сервер - " + reply.getAddress().getHostAddress() + ", порт - " + reply.getPort() + ", получил сообщение - " + myMessage);
             }
         }
+    }
+
+    @Override
+    public void update(DatagramPacket packet) throws IOException {
+        DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
+        clSocket.receive(reply);
+        byte[] data = reply.getData();
+        String myMessage = new String(data, 0, reply.getLength());
+        System.out.println("Сервер - " + reply.getAddress().getHostAddress() + ", порт - " + reply.getPort() + ", получил сообщение - " + myMessage);
     }
 }
