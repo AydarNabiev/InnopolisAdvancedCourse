@@ -9,7 +9,7 @@ public class Client {
         this.port = port;
     }
 
-    public String sendMessage(String message) {
-        return (this.name + " : " + message);
+    public String formMessage(String message) {
+        return ("Name:" + this.name + " ; " + "message:" + message);
     }
 }
